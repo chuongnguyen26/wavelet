@@ -32,7 +32,7 @@ class Handler implements URLHandler {
                         data_storage[size] = parameters[1];
                     }
                     size++;
-                    return String.format("You have successfull added %s to the list", 
+                    return String.format("You have successfully added %s to the list", 
                     parameters[1]);
                 }
             }
