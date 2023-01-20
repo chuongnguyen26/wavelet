@@ -6,35 +6,51 @@ class Handler implements URLHandler {
     // The one bit of state on the server: a number that will be manipulated by
     // various requests.
     int num = 0;
-    ArrayList<String> list = new ArrayList<String>();
+    String[] data_storage = new String[10];
+    int size  = 0;
 
     public String handleRequest(URI url) {
         if (url.getPath().equals("/")) {
-            return String.format("Chuong's number is: %d", num);
-        } 
-        else if (url.getPath().equals("/increment")) {
-            num += 1;
-            return String.format("Number incremented!");
+            return String.format("Hello there");
         } 
         else {
             System.out.println("Path: " + url.getPath());
+
             if (url.getPath().contains("/add")) {
+
                 String[] parameters = url.getQuery().split("=");
+
                 if (parameters[0].equals("s")) {
-                    if(parameters[1].indexOf("app") >= 0){
-                        list.add(parameters[1]);
-                        return String.format("You added: %s", parameters[1]);
-                    }      
-                    return String.format("%s doesn't contain 'app'", parameters[1]);
+
+                    if(size < data_storage.length){
+                        data_storage[size] = parameters[1];
+                    }
+                    else{
+                        String[] temp_data_storage = data_storage;
+                        data_storage = new String[temp_data_storage.length * 2];
+                        for(int i = 0; i< temp_data_storage.length; i++){
+                            data_storage[i] = temp_data_storage[i];
+                        }
+                        data_storage[size] = parameters[1];
+                    }
+                    size++;
+                    return String.format("You have successfull added: %s to the list", 
+                    parameters[1]);
                 }
             }
             else if (url.getPath().contains("/search")){
+                ArrayList<String> print_list = new ArrayList<String>();
                 String[] parameters = url.getQuery().split("=");
+
                 if (parameters[0].equals("s")) {
-                    if(parameters[1].equals("app")){
-                        return list.toString();
+                    for(int i = 0; i < size; i++){
+                        if(data_storage[i].indexOf(parameters[1]) >= 0){
+                            System.out.println(data_storage[i]);
+                            print_list.add(data_storage[i]);
+                        }
                     }
                 }
+                return print_list.toString();
             }
             return "404 Not Found!";
         }     
