@@ -14,8 +14,6 @@ class Handler implements URLHandler {
             return String.format("Hello there");
         } 
         else {
-            System.out.println("Path: " + url.getPath());
-
             if (url.getPath().contains("/add")) {
 
                 String[] parameters = url.getQuery().split("=");
@@ -45,7 +43,6 @@ class Handler implements URLHandler {
                 if (parameters[0].equals("s")) {
                     for(int i = 0; i < size; i++){
                         if(data_storage[i].indexOf(parameters[1]) >= 0){
-                            System.out.println(data_storage[i]);
                             print_list.add(data_storage[i]);
                         }
                     }
